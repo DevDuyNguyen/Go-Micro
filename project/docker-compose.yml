@@ -1,0 +1,9 @@
+version: "1"
+
+services:
+  broker-service:
+    build:
+      context: ./../broker-service
+      dockerfile: broker-service.dockerfile
+    ports:
+      - "3000:3000"
