@@ -6,6 +6,7 @@
             <div class="col">
                 <h1 class="mt-5">Test microservices</h1>
                 <hr>
+                <button id="brokerBtn">Test broker</button>
 
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted">Output shows here...</span>
@@ -31,6 +32,44 @@
 
 {{define "js"}}
     <script>
-        
+        let brokerBtn=document.getElementById("brokerBtn")
+        let output=document.getElementById("output")
+        let payload=document.getElementById("payload")
+        let received=document.getElementById("received")
+
+        brokerBtn.addEventListener("click", ()=>{
+            fetch("http://localhost:3000",{
+                method:"POST"
+            })
+            .then((response)=>response.json())
+            .then((data)=>{
+                if(data.error===true){
+                    console.log(data.Message)
+                }
+                else{
+                    payload.replaceChildren()
+                    let tmp=document.createElement("p")
+                    tmp.innerText="Empty post request"
+                    payload.appendChild(tmp)
+
+                    received.innerText=JSON.stringify(data)
+
+                    output.replaceChildren()
+                    tmp=document.createElement("p")
+                    console.log(data.message)
+                    tmp.innerText="Response from the broker service:"+ data.message
+                    output.appendChild(tmp)
+                }
+
+            })
+            .catch((err)=>{
+                let errContent=document.createElement("p")
+                errContent.textContent=err
+                output.replaceChildren()
+                output.appendChild(errContent)
+            })
+
+        })
+
     </script>
 {{end}}
