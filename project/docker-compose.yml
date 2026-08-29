@@ -6,4 +6,29 @@ services:
       context: ./../broker-service
       dockerfile: broker-service.dockerfile
     ports:
-      - "3000:3000"
+      - "8080:80"
+    restart: always
+
+  postgres:
+    image: postgres:14
+    ports:
+      - "54321:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 111
+      POSTGRES_USER: duy
+      POSTGRES_DB: users
+    volumes:
+      - "./db-data/postgres:/var/lib/postgres/data"
+
+  authentication-service:
+    build:
+      context: ./../authentication-service
+      dockerfile: authentication-service.dockerfile
+    ports:
+      - "8081:80"
+    restart: always
+    environment:
+      WaitTimeInSecondEnv: 5
+      RepeatTime: 10
+      DSN: "host=postgres port=5432 user=duy password=111 dbname=users sslmode=disable connect_timeout=5"

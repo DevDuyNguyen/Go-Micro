@@ -1,7 +1,7 @@
-SHELL=cmd.exe
-FRONT_END_BINARY=frontApp.exe
+SHELL:=cmd.exe
+FRONT_END_BINARY:=frontApp.exe
 
-# up: starts all containers in the background without forcing build
+# up: starts all containers in the background without forcing rebuild
 up:
 	@echo Starting all Docker images
 	docker-compose up -d
@@ -13,7 +13,7 @@ up_build:
 	@echo Stoping all Docker images (if running)...
 	docker-compose down
 	@echo Rebuilding all Docker images and starting the built Docker images
-	docker-compose --build -d
+	docker-compose up --build -d
 	@echo All Docker images started!
 
 # down: stop docker compose

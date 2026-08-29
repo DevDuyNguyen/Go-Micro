@@ -9,7 +9,7 @@ import (
 type App struct{}
 
 func main() {
-	addr := flag.String("addr","3000","Address that the server listens on")
+	addr := flag.String("addr","80","Address that the server listens on")
 	flag.Parse()
 
 	app:=App{}

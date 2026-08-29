@@ -14,6 +14,14 @@ var db *sql.DB
 type Models struct{
 	User User
 }
+
+func NewModels(dbPool *sql.DB) (Models){
+	db=dbPool
+	return Models{
+		User:User{},
+	}
+}
+
 type User struct{
 	ID        int       `json:"id"`
 	Email     string    `json:"email"`
@@ -212,7 +220,7 @@ func (u *User) PasswordMatches(plainText string) (bool, error){
 		err:=db.QueryRowContext(ctx, getHashedPassword, u.ID).Scan(&hashedPassword)
 		if err!=nil{
 			if errors.Is(err, sql.ErrNoRows){
-				return false, errEntityNotFound
+				return false, ErrEntityNotFound
 			}else{
 				return false, err
 			}

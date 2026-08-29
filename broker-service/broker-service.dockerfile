@@ -7,4 +7,5 @@ RUN chmod +x brokerApp
 FROM alpine:latest
 RUN mkdir /app
 COPY --from=builder /app/brokerApp /app
+EXPOSE 80
 CMD [ "/app/brokerApp" ]

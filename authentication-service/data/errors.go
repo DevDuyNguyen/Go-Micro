@@ -2,5 +2,6 @@ package data
 
 import "errors"
 
-var errPasswordNotMatch = errors.New("Password not match")
-var errEntityNotFound = errors.New("Entity not found")
+var ErrPasswordNotMatch = errors.New("Password not match")
+var ErrEntityNotFound = errors.New("Entity not found")
+var ErrCanNotConnectToDB= errors.New("Can't connect to the database")
