@@ -37,6 +37,6 @@ start:
 #stop: stop the front end
 stop:
 	@echo Stopping the front end...
-	@taskill /IM "${FRONT_END_BINARY}" /F
+	@taskkill /IM "${FRONT_END_BINARY}" /F
 	@echo The front end is stopped!
 

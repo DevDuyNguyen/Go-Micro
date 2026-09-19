@@ -6,7 +6,8 @@
             <div class="col">
                 <h1 class="mt-5">Test microservices</h1>
                 <hr>
-                <button id="brokerBtn">Test broker</button>
+                <a id="brokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Broker</a>
+                <a id="authBrokerBtn" class="btn btn-outline-secondary" href="javascript:void(0);">Test Auth</a>
 
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted">Output shows here...</span>
@@ -32,44 +33,68 @@
 
 {{define "js"}}
     <script>
-        let brokerBtn=document.getElementById("brokerBtn")
-        let output=document.getElementById("output")
-        let payload=document.getElementById("payload")
-        let received=document.getElementById("received")
+    let brokerBtn = document.getElementById("brokerBtn");
+    let authBrokerBtn = document.getElementById("authBrokerBtn");
+    let output = document.getElementById("output");
+    let sent = document.getElementById("payload");
+    let recevied = document.getElementById("received");
 
-        brokerBtn.addEventListener("click", ()=>{
-            fetch("http://localhost:3000",{
-                method:"POST"
-            })
-            .then((response)=>response.json())
-            .then((data)=>{
-                if(data.error===true){
-                    console.log(data.Message)
-                }
-                else{
-                    payload.replaceChildren()
-                    let tmp=document.createElement("p")
-                    tmp.innerText="Empty post request"
-                    payload.appendChild(tmp)
+    authBrokerBtn.addEventListener("click", function() {
 
-                    received.innerText=JSON.stringify(data)
+        const payload = {
+            action: "auth",
+            auth: {
+                email: "admin@example.com",
+                password: "verysecret",
+            }
+        }
 
-                    output.replaceChildren()
-                    tmp=document.createElement("p")
-                    console.log(data.message)
-                    tmp.innerText="Response from the broker service:"+ data.message
-                    output.appendChild(tmp)
-                }
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
 
-            })
-            .catch((err)=>{
-                let errContent=document.createElement("p")
-                errContent.textContent=err
-                output.replaceChildren()
-                output.appendChild(errContent)
-            })
+        const body = {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: headers,
+        }
 
+        fetch("http:\/\/localhost:8080/handle", body)
+        .then((response) => response.json())
+        .then((data) => {
+            sent.innerHTML = JSON.stringify(payload, undefined, 4);
+            received.innerHTML = JSON.stringify(data, undefined, 4);
+            if (data.error) {
+                output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
+            } else {
+                output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
+            }
         })
+        .catch((error) => {
+            output.innerHTML += "<br><br>Eror: " + error;
+        })
+    })
 
+    brokerBtn.addEventListener("click", function() {
+
+        const body = {
+            method: 'POST',
+        }
+
+        fetch("http:\/\/localhost:8080", body)
+        .then((response) => response.json())
+        .then((data) => {
+            sent.innerHTML ="empty post request";
+            received.innerHTML = JSON.stringify(data, undefined, 4);
+            if (data.error) {
+                console.log(data.message);
+            } else {
+                output.innerHTML += `<br><strong>Response from broker service</strong>: ${data.message}`;
+            }
+        })
+        .catch((error) => {
+            output.innerHTML += "<br><br>Eror: " + error;
+        })
+    })
+        
     </script>
 {{end}}
