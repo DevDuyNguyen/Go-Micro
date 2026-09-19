@@ -15,7 +15,7 @@ func main() {
 	app:=App{}
 
 	server:= &http.Server{
-		Addr: fmt.Sprintf(":%s", *addr),
+		Addr: fmt.Sprintf("0.0.0.0:%s", *addr),
 		Handler: app.routes(),
 	}
 

@@ -12,14 +12,14 @@ services:
   postgres:
     image: postgres:14
     ports:
-      - "54321:5432"
+      - "5433:5432"
     restart: always
     environment:
       POSTGRES_PASSWORD: 111
-      POSTGRES_USER: duy
+      POSTGRES_USER: postgres
       POSTGRES_DB: users
     volumes:
-      - "./db-data/postgres:/var/lib/postgres/data"
+      - "./db-data/postgres:/var/lib/postgresql/data"
 
   authentication-service:
     build:
@@ -31,4 +31,4 @@ services:
     environment:
       WaitTimeInSecondEnv: 5
       RepeatTime: 10
-      DSN: "host=postgres port=5432 user=duy password=111 dbname=users sslmode=disable connect_timeout=5"
+      DSN: "host=postgres port=5432 user=postgres password=111 dbname=users sslmode=disable connect_timeout=5"

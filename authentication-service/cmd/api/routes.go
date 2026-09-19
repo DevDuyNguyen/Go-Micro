@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 )
 
@@ -12,7 +13,7 @@ type App struct {
 	Models data.Models
 }
 
-func (*App) Routes() (http.Handler){
+func (app *App) Routes() (http.Handler){
 	r := chi.NewRouter()
 	r.Use(cors.Handler(cors.Options{
 		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
@@ -24,6 +25,10 @@ func (*App) Routes() (http.Handler){
 		AllowCredentials: false,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
+
+	r.Use(middleware.Heartbeat("/ping"))
+
+	r.Post("/authenticate", app.Authenticate)
 
 	return r
 }
