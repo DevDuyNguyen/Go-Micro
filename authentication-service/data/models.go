@@ -80,6 +80,7 @@ func (*User) GetByEmail(email string) (*User, error){
 
 	var tmpUser User
 	row:=db.QueryRowContext(ctx, stmt, email)
+	
 	err:=row.Scan(
 		&tmpUser.ID,
 		&tmpUser.Email,
