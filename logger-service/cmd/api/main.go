@@ -24,10 +24,10 @@ func main() {
 	}()
 
 	app:= App{
-		Models: models.New(mongoClient, os.Getenv("DatabaseName"), os.Getenv("CollectionName")),
+		Models: models.New(mongoClient, os.Getenv("DATABASE_NAME"), os.Getenv("COLLECTION_NAME")),
 	}
 	
-	port:=os.Getenv("Port")
+	port:=os.Getenv("PORT")
 
 	server := &http.Server{
 		Addr: fmt.Sprintf("0.0.0.0:%s",port),
@@ -41,9 +41,9 @@ func main() {
 }
 
 func connectToMongoDB() (*mongo.Client, error){
-	clientOpts:=options.Client().ApplyURI(os.Getenv("MongoDBURI")).SetAuth(options.Credential{
-		Username: os.Getenv("UserName"),
-		Password: os.Getenv("Password"),
+	clientOpts:=options.Client().ApplyURI(os.Getenv("MONGO_DB_URI")).SetAuth(options.Credential{
+		Username: os.Getenv("USER_NAME"),
+		Password: os.Getenv("PASSWORD"),
 	})
 
 	client,err:=mongo.Connect(clientOpts)
