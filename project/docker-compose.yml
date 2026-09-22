@@ -14,10 +14,7 @@ services:
     ports:
       - "5433:5432"
     restart: always
-    environment:
-      POSTGRES_PASSWORD: 111
-      POSTGRES_USER: postgres
-      POSTGRES_DB: users
+    env_file: postgres.env
     volumes:
       - "./db-data/postgres:/var/lib/postgresql/data"
 
@@ -27,8 +24,12 @@ services:
       dockerfile: authentication-service.dockerfile
     ports:
       - "8081:80"
-    restart: always
-    environment:
-      WaitTimeInSecondEnv: 5
-      RepeatTime: 10
-      DSN: "host=postgres port=5432 user=postgres password=111 dbname=users sslmode=disable connect_timeout=5"
+    env_file: authentication-service.env
+
+  mongodb:
+    image: mongodb/mongodb-community-server:7.0-ubi8-slim
+    ports:
+      - "27018:27017"
+    env_file: mongodb.env
+    volumes:
+      - "./db-data/mongo:/data/db"
