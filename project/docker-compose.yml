@@ -41,3 +41,19 @@ services:
     env_file: mongodb.env
     volumes:
       - "./db-data/mongo:/data/db"
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "1025:1025"
+      - "8023:8025"
+
+  mail-service:
+    build:
+      context: ./../mail-service
+      dockerfile: mail-service.dockerfile
+    ports:
+      - "8084:80"
+    environment:
+      - HTTP_PORT=80
+    env_file: mail-service.dev.env
