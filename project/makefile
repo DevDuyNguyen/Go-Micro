@@ -32,7 +32,7 @@ build_front:
 start:
 	@echo Starting the front end
 	cd ./../front-end && start /B ${FRONT_END_BINARY}
-	@echo Front end started
+	@echo Front end started on port 80
 
 #stop: stop the front end
 stop:

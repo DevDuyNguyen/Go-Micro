@@ -8,6 +8,6 @@ RUN CGO_ENABLED=0 go build -o logger-service ./cmd/api
 
 FROM alpine
 WORKDIR /app
-COPY --from=build /app /app
+COPY --from=build /app/logger-service /app
 EXPOSE 80
 CMD ["/app/logger-service"]

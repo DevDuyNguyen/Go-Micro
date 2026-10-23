@@ -8,6 +8,6 @@ RUN CGO_ENABLED=0 go build -o authentication_service ./cmd/api/
 
 FROM alpine
 WORKDIR /app
-COPY --from=build /app/ /app/
+COPY --from=build /app/authentication_service /app/
 EXPOSE 80
 CMD ["/app/authentication_service"]
